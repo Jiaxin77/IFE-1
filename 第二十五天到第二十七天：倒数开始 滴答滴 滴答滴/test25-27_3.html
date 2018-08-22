@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>IFE ECMAScript</title>
+</head>
+
+<body>
+    <div id="mydate"></div>
+    <script>
+        //封装一个函数，把月、日、小时等出现个位数的情况前面补充0，补充为两位，比如1变为01
+        function checkTime(x) {
+            if (x < 10) {
+                x = "0" + x;
+            }
+            return x;
+        }
+        //封装一个函数，来根据某个日期返回这一天是星期几
+        function getWeekDay(d) {
+            var weekday = new Array(7);
+            weekday[0] = "Sunday";
+            weekday[1] = "Monday";
+            weekday[2] = "Tuesday";
+            weekday[3] = "Wednesday";
+            weekday[4] = "Thursday";
+            weekday[5] = "Friday";
+            weekday[6] = "Saturday";
+            return weekday[d.getDay()];
+        }
+        //返回年月日
+        function getYearMonthDate(d) {
+            var year = d.getFullYear();
+            var month = d.getMonth() + 1;
+            var date = d.getDate();
+            return checkTime(year) + "-" + checkTime(month) + "-" + checkTime(date);
+        }
+        //返回时分秒
+        function getHourMinuteSecond(d) {
+            var hour = d.getHours();
+            var minute = d.getMinutes();
+            var second = d.getSeconds();
+            var str;
+            if (hour > 12) {
+                hour -= 12;
+                str = " PM";
+            } else {
+                str = " AM";
+            }
+            return checkTime(hour) + ":" + checkTime(minute) + ":" + checkTime(second) + str;
+        }
+        //封装一个函数，把最后的日期时间，按照要求的格式进行包装
+        function now() {
+            var today = new Date();
+            document.getElementById('mydate').innerHTML = getYearMonthDate(today) + " " + getWeekDay(today) + " " +
+                getHourMinuteSecond(today);
+            setTimeout('now()', 1000);
+        }
+
+        now();
+    </script>
+</body>
+
+</html>
