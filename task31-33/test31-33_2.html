@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>IFE ECMAScript</title>
+</head>
+
+<body>
+    <div id="region-radio-wrapper"></div>
+    <div id="product-radio-wrapper"></div>
+
+    <div id="table-wrapper">
+    </div>
+
+    <script type="text/javascript" src="ife31data.js"></script>
+    <script>
+        var region = document.getElementById("region-radio-wrapper");
+        var product = document.getElementById("product-radio-wrapper");
+
+        function getCheckbox(checkboxName, data) {
+            //生成全选checkbox的html，给一个自定义属性表示为全选checkbox，比如checkbox-type = "all"
+            var all = document.createElement("input");
+            all.setAttribute("type", "checkbox");
+            all.setAttribute("value", "0");
+            all.setAttribute("checkbox-type", "all");
+            var text = document.createTextNode("全选");
+            checkboxName.appendChild(all);
+            checkboxName.appendChild(text);
+
+            //生成各个子选项checkbox的html， 给一个自定义属性表示为子选项
+            for (var i = 0; i < data.length; i++) {
+                var child = document.createElement("input");
+                child.setAttribute("value", data[i].value);
+                child.setAttribute("type", "checkbox");
+                child.setAttribute("checkbox-type", "child");
+                checkboxName.appendChild(child);
+                var text2 = document.createTextNode(data[i].text);
+                checkboxName.appendChild(child);
+                checkboxName.appendChild(text2);
+            }
+            //容器innerHTML = 生成好的html集合
+            console.log(checkboxName)
+
+            checkboxName.onclick = function (e) {
+                var e = e || window.event;
+                var target = e.target || e.srcElement;
+                if (target.getAttribute("type") == "checkbox") {
+                    var len = checkboxName.childNodes.length;
+                    var count = 0;
+                    if (target.nodeName.toLowerCase() == 'input') {
+                        var type = target.getAttribute("checkbox-type");
+                        //对于全选的CheckBox的点击事件，要做的事情很简单，让所有的CheckBox全部勾选上
+                        if (type == "all") {
+                            for (var i = 2; i < len; i += 2) {
+                                checkboxName.childNodes[i].checked = true;
+                            }
+                        } else if (type == "child") {
+                            for (var i = 2; i < len; i += 2) {
+                                if (checkboxName.childNodes[i].checked == true) {
+                                    count++;
+                                }
+                            }
+                            //target和count都是按click之后的状态来进行判断
+                            //在点击之前它是不是唯一一个被勾选的？如果是的话，阻止这次点击默认事件，或者立马又将其checked状态置为真
+                            if (target.checked == false && count == 0) {
+                                target.checked = true;
+                            }
+                            //点击之后，是不是满足了全选状态，并对应修改全选CheckBox的状态
+                            else if (target.checked == true && count == len / 2 - 1) {
+                                target.checked = true;
+                                checkboxName.childNodes[0].checked = true;
+                            } else if (target.checked == false && count != len / 2 - 1) {
+                                target.checked = false;
+                                checkboxName.childNodes[0].checked = false;
+                            } else {
+                                target.checked = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // 对象或数组自己根据喜好实现均可
+        getCheckbox(region, [{
+            value: 1,
+            text: "XXXX"
+        }, {
+            value: 2,
+            text: "YYYY"
+        }]);
+
+        getCheckbox(product, [{
+            value: 1,
+            text: "AAAA"
+        }, {
+            value: 2,
+            text: "BBBB"
+        }]);
+
+        // 生成一组CheckBox({
+        //    1: "XXXX",
+        //    2: "YYYY"
+        // });
+    </script>
+</body>
+
+</html>
