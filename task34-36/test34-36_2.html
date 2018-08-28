@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>IFE ECMAScript</title>
+</head>
+
+<body>
+    <div id="bar-wrapper">
+    </div>
+
+    <script type="text/javascript" src="bar.js"></script>
+    <script>
+        var data = [120, 100, 140, 160, 180, 185, 190, 210, 230, 245, 255, 270];
+        var bar = document.getElementById("bar-wrapper");
+        bar.innerHTML = getBar(data);
+    </script>
+
+</body>
+
+</html>
