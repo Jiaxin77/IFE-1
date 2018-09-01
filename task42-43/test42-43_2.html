@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>IFE ECMAScript</title>
+</head>
+
+<body>
+
+    <script>
+        var id = 0;
+
+        function generateID() {
+            return ++id;
+        }
+
+        class Restaurant {
+            constructor(attr) {
+                this.cash = attr.cash;
+                this.seats = attr.seats;
+                this.staff = attr.staff;
+            }
+            hire(staff) {
+                this.staff.push(staff);
+            }
+            fire(staff) {
+                this.staff = this.staff.filter(function (el) {
+                    return el !== staff;
+                });
+            }
+        }
+
+        class Staff {
+            constructor(name, salary) {
+                this.id = generateID();
+                this.name = name;
+                this.salary = salary;
+            }
+            work() {}
+        }
+
+        class Waiter extends Staff {
+            constructor(name, salary) {
+                super(name, salary);
+            }
+            serve(orderlist) {
+                if (Array.isArray(orderlist)) {
+                    this.list = orderlist;
+                } else {
+                    console.log("上菜");
+                }
+            }
+        }
+
+        class Cook extends Staff {
+            constructor(name, salary) {
+                super(name, salary);
+            }
+            serve() {
+                console.log("烹饪");
+            }
+        }
+
+        class Customer {
+            order() {
+                console.log("点菜");
+            }
+            eat() {
+                console.log("吃菜");
+            }
+        }
+
+        class Dish {
+            constructor(dishname, cost, price) {
+                this.dishname = dishname;
+                this.cost = cost;
+                this.price = price;
+            }
+        }
+
+        var ifeRestaurant = new Restaurant({
+            cash: 1000000,
+            seats: 20,
+            staff: []
+        });
+
+        var newCook = new Cook("Tony", 10000);
+        var newCook2 = new Cook("James", 10000);
+        ifeRestaurant.hire(newCook);
+        ifeRestaurant.hire(newCook2)
+
+        console.log(ifeRestaurant.staff);
+
+        ifeRestaurant.fire(newCook);
+        console.log(ifeRestaurant.staff);
+    </script>
+</body>
+
+</html>
